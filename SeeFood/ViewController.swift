@@ -24,6 +24,7 @@ class ViewController: UIViewController , UIImagePickerControllerDelegate , UINav
     @IBOutlet weak var camerButton: UIBarButtonItem!
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var textData: UITextView!
+    @IBOutlet weak var cancellshow: UIBarButtonItem!
     
     let imagePicker = UIImagePickerController()
     
@@ -45,6 +46,7 @@ class ViewController: UIViewController , UIImagePickerControllerDelegate , UINav
         self.navigationItem.title = " "
         
         camerButton.isEnabled = false
+        cancellshow.isEnabled = false
         
         SVProgressHUD.show()
         
@@ -81,30 +83,12 @@ class ViewController: UIViewController , UIImagePickerControllerDelegate , UINav
                 DispatchQueue.main.async {
                     
                     self.camerButton.isEnabled = true
+                    self.cancellshow.isEnabled = true
+                    self.navigationItem.title = "Result Of Search"
                     SVProgressHUD.dismiss()
                 }
                 
-                
-                
-                if self.classificationResults.contains("hotdog"){
-                    //return to main
-                    DispatchQueue.main.async {
-                        // self.navigationItem.title = "hotdog"
-                        self.navigationController?.navigationBar.barTintColor = #colorLiteral(red: 0.9098039269, green: 0.4784313738, blue: 0.6431372762, alpha: 1)
-                        self.navigationController?.navigationBar.isTranslucent = false
-                        
-                        
-                    }
-                    
-                }else{
-                    DispatchQueue.main.async {
-                        // self.navigationItem.title = "not hotdog"
-                        self.navigationController?.navigationBar.barTintColor = #colorLiteral(red: 0.5843137503, green: 0.8235294223, blue: 0.4196078479, alpha: 1)
-                        self.navigationController?.navigationBar.isTranslucent = false
-                        
-                    }
-                    
-                }
+               
             })
             
             
@@ -126,11 +110,12 @@ class ViewController: UIViewController , UIImagePickerControllerDelegate , UINav
     //MARK: - run camera to tack photo
     @IBAction func cameraTapped(_ sender: UIBarButtonItem) {
         imagePicker.sourceType = .savedPhotosAlbum
-        imagePicker.allowsEditing = false
+        imagePicker.allowsEditing = true
         present(imagePicker, animated: true, completion: nil)
     }
     
     @IBAction func cancel(_ sender: UIBarButtonItem) {
+        SVProgressHUD.dismiss()
         imageView.image = UIImage(named: "")
         navigationItem.title = ""
         textData.text = ""
